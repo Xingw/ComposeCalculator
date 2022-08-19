@@ -27,7 +27,7 @@ fun KeyBoard(onClick: (String) -> Unit = {}) {
 val defaultKeyMapList: MutableList<String> = mutableListOf(
     "(",
     ")",
-    "%",
+    "C",
     "AC",
     "7",
     "8",
@@ -36,7 +36,7 @@ val defaultKeyMapList: MutableList<String> = mutableListOf(
     "4",
     "5",
     "6",
-    "x",
+    "*",
     "1",
     "2",
     "3",

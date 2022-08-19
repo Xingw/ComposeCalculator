@@ -3,9 +3,17 @@ package com.example.calculator.arithmetic
 import java.util.*
 
 class Calculator {
-    fun calculate(s: String): Int {
-        System.out.println(s.toRPN().joinToString())
-        return s.toRPN().evalRPN()
+    fun calculate(s: String): String {
+        return try {
+            var result = s.toRPN().evalRPN().toString()
+            if (result.takeLast(2) == ".0") {
+                result = result.dropLast(2)
+            }
+            result
+        } catch (e : java.lang.Exception) {
+            e.printStackTrace()
+            "ERROR"
+        }
     }
 
     // 中缀表达式转前缀表达式
@@ -18,13 +26,13 @@ class Calculator {
         val stack = ArrayDeque<Char>()
         var num = 0
         outer@
-        for ((index, c) in this!!.withIndex()) {
+        for ((index, c) in this.withIndex()) {
             when (c) {
                 ' ' -> {
                 }
                 in '0'..'9' -> {
                     num = num * 10 + (c.toInt() - 48)
-                    if (index + 1 >= length || !(this[index + 1] in '0'..'9')) {
+                    if (index + 1 >= length || this[index + 1] !in '0'..'9') {
                         list.add("$num")
                         num = 0
                     }
@@ -59,24 +67,25 @@ class Calculator {
         return when (this) {
             '+', '-' -> 1
             '*', '/' -> 2
+            '(', ')' -> -1
             null -> -1
             else -> throw IllegalStateException()
         }
     }
 
-    private fun Deque<Int>.eval(operator: (Int, Int) -> Int): Int {
+    private fun Deque<Float>.eval(operator: (Float, Float) -> Float): Float {
         val num1 = pop()
         val num2 = pop()
 
         return operator(num2, num1)
     }
 
-    private fun List<String>?.evalRPN(): Int {
+    private fun List<String>?.evalRPN(): Float {
         if (this.isNullOrEmpty()) {
-            return 0
+            return 0f
         }
 
-        val stack = ArrayDeque<Int>()
+        val stack = ArrayDeque<Float>()
 
         for (token in this) {
             when (token) {
@@ -93,7 +102,7 @@ class Calculator {
                     stack.push(stack.eval { o1, o2 -> o1 / o2 })
                 }
                 else -> {
-                    stack.push(token.toInt())
+                    stack.push(token.toFloat())
                 }
             }
         }

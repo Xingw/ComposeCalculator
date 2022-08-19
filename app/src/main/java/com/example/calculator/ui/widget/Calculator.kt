@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 fun MyCalculator(onClick: (String) -> Unit = {}, displayText:String = "123") {
     Column(
         Modifier
-            .padding(top = 40.dp)) {
+            .padding(vertical = 40.dp, horizontal = 12.dp)) {
         NormalDisPlay(displayText)
         Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
         KeyBoard(onClick)
